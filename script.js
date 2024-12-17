@@ -36,21 +36,34 @@ window.onload = function () {
     }
     //-------------------------------------------------------//
     //----------- Cocher les cellules de la grille------------//
-    matrix.onclick = () => tickCell(soundGrid.length);     //problème : double click forcé
-    function tickCell(gridSize){
-            for(let i=0 ; i<gridSize ; i++){
-                soundGrid[i].addEventListener("click" , ()=> {
-                    loadSounds(soundGrid[i]);
-                    if(soundGrid[i].getAttribute("active")==="off"){
-                        soundGrid[i].style.backgroundColor = "rgba(0, 0, 255, 0.3)" ; 
-                        return soundGrid[i].setAttribute("active", "on");    
-                    }else if(soundGrid[i].getAttribute("active")==="on"){
-                        soundGrid[i].style.backgroundColor = " rgba(195, 255, 184, 0.3)";
-                        return soundGrid[i].setAttribute("active", "off");
-                    }
-                })
-            }
+    matrix.addEventListener("mouseenter" , handleClick);
+    function handleClick(){
+        console.log("mouseover!");
+        matrix.removeEventListener("mouseenter" , handleClick);
+        matrix.addEventListener("mouseleave" , resetGridListener);
+        for (let i = 0; i < soundGrid.length; i++) {
+            soundGrid[i].addEventListener("click", tickCell);
         }
+    }
+    function resetGridListener(){
+        console.log("mouseout!")
+        for (let i = 0; i < soundGrid.length; i++) {
+            soundGrid[i].removeEventListener("click", tickCell);
+        }
+        matrix.addEventListener("mouseenter" , handleClick);
+        matrix.removeEventListener("mouseleave" , resetGridListener);
+    }
+    function tickCell() {
+        let i = Array.from(this.parentNode.children).indexOf(this);
+        loadSounds(soundGrid[i]);
+        if (soundGrid[i].getAttribute("active") === "off") {
+            soundGrid[i].style.backgroundColor = "rgba(0, 0, 255, 0.3)";
+            soundGrid[i].setAttribute("active", "on");
+        } else if (soundGrid[i].getAttribute("active") === "on") {
+            soundGrid[i].style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+            soundGrid[i].setAttribute("active", "off");
+        }
+    }  
     //-------------------------------------------------------//
     //-------------  Ajouter Ligne à la grille --------------//
     for(let i=0 ;i<newNotes.length ; i++){
