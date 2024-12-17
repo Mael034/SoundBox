@@ -1,21 +1,103 @@
+html{
+    height: 100%;
+}
+body {
+    margin: 0;
+    all: unset;
+    background-color: #1f1f1f;
+    height: 100%;
+}
 main {
     display: flex;
+    height: 100%;
 }
 #container{
     display: block;
+    flex: 4;
+}
+.noDisplay{
+    display: none;
 }
 .box {
     display: flex;
+    margin-top: 50px;
+    margin-left: 50px;
+    height: 450px;
+    width: 1000px;
+}
+.controls {
+
+    flex: 1;
+    height: 100%;
+    border-right: 2px solid black;
+}
+#pauseButton,#clearButton{
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+#playButton,#stopButton {
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+}
+#playButton>svg ,#stopButton>svg {
+    margin-left: 50%;
+}
+#pauseButton>svg , #clearButton>svg{
+    margin-left: 25%;
+}
+#addButton {
+    margin: 10px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+}
+.addControls {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.addControls>div {
+    width: 80%;
+    margin: 10px auto;
+}
+.addControls>div>button {
+    width: 100%;
+    margin: 0;
+}
+.loopControls{
+    margin-top: 50px;
+}
+.loopControls>div>button , .addControls>button{
+    all: unset;
+    background: linear-gradient(180deg, #3e3e3e, #262626);
+    color: white;
+    height: 60px;
+    width: 80px;
+    margin-top: 10px;
+    text-align: calc(); 
+}
+.loopControls>div>button:hover , #addButton:hover{
+    background: linear-gradient(180deg, #464646, #262626);
+    cursor: pointer;
+}
+.loopControls>div {
+    display: flex;
+    width: 100%;
+    justify-content: center;
 }
 #matrix {
     display: grid;
     width: 800px;
-    height: 200px;
+    height: 100%;
     grid-template-columns: repeat(16 , 1fr);
     grid-auto-rows: 1fr;
 }
 #namesMatrix {
+    color: #bebebe;
     display: grid;
+    width: 110px;
     align-items: center;
     line-height: 100%; 
     grid-template-columns:repeat(1 , 1fr);
@@ -24,22 +106,25 @@ main {
 
 #loopMatrix {
     display: grid;
-    padding-left: 35px;
+    margin-left: 160px;
     height: 20px;
     width: 800px;
     grid-template-columns: repeat(16 , 1fr);
     grid-auto-rows: 1fr;
 }
 .loopCell {
-    border : 1px solid purple;
+    border : 1px solid rgb(51, 51, 51);
     width: 1fr;
+    margin: 5px;
 }
 .soundCell {
-    border: 1px solid red;
-    background-color: rgba(195, 255, 184, 0.3);
+    border-radius: 7px;
+    margin: 5px;
+    border: 1px solid rgb(51, 51, 51);
+    background-color: rgba(91, 91, 91, 0.282);
     height: 1fr;
     width: 1fr;
 }
 .activeCell {
-    background-color: rgba(0, 0, 255, 0.3);
+    background-color: rgba(0, 255, 0, 0.3);
 }
