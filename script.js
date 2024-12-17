@@ -5,19 +5,23 @@ window.onload = function () {
     const soundGrid = document.getElementsByClassName("soundCell");
     const loopGrid = document.getElementsByClassName("loopCell");
     //-------------------------------------------------------- //
-    //------------------------buttons-------------------------//
+    //-------------------------buttons-------------------------//
     const newNotes = document.getElementsByClassName("addBtn");
+    const newNotesContainer = document.getElementById("notesDisplay");
+    const plusBtn = document.getElementById("addButton");
+    plusBtn.addEventListener("click" , ()=>{newNotesContainer.classList.toggle("noDisplay")})
     const playBtn = document.getElementById("playButton");
     const stopBtn = document.getElementById("stopButton");
     const pauseBtn = document.getElementById("pauseButton");
     const clearBtn = document.getElementById("clearButton");
     clearBtn.addEventListener("click",clear);
     //--------------------------------------------------------//
-    //---------------------VARIABLES-------------------------//
+    //---------------------VARIABLES--------------------------//
     let playing = false;
     let stopped = true;
-    const loopLength = 200;
+    const loopLength = 150;
     let timer = 0;
+    let gridAsNewLength = false;
     //-------------------------------------------------------//
     //--------------------AUDIO CONTEXT----------------------//
     const audioBuffers = {};
@@ -34,7 +38,7 @@ window.onload = function () {
             })
         });
     }
-    //-------------------------------------------------------//
+    //--------------------------------------------------------//
     //----------- Cocher les cellules de la grille------------//
     matrix.addEventListener("mouseenter" , handleClick);
     function handleClick(){
@@ -57,20 +61,21 @@ window.onload = function () {
         let i = Array.from(this.parentNode.children).indexOf(this);
         loadSounds(soundGrid[i]);
         if (soundGrid[i].getAttribute("active") === "off") {
-            soundGrid[i].style.backgroundColor = "rgba(0, 0, 255, 0.3)";
+            soundGrid[i].style.backgroundColor = "rgba(60, 197, 80, 0.282)";
             soundGrid[i].setAttribute("active", "on");
         } else if (soundGrid[i].getAttribute("active") === "on") {
-            soundGrid[i].style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+            soundGrid[i].style.backgroundColor = "rgba(91, 91, 91, 0.282)";
             soundGrid[i].setAttribute("active", "off");
         }
-    }  
+    }   
     //-------------------------------------------------------//
     //-------------  Ajouter Ligne à la grille --------------//
     for(let i=0 ;i<newNotes.length ; i++){
         newNotes[i].onclick = () => addNoteToGrid(i);
     }
     function addNoteToGrid(choosenNote){
-        if(soundGrid[choosenNote][1] != true){
+        if(!soundGrid[choosenNote][1]){
+            gridAsNewLength = true;
             let lastChild = soundGrid[matrix.childElementCount-1];
             let lastChildAttr = parseInt(lastChild.getAttribute('data-row'));
             let noteValue = newNotes[choosenNote].value;
@@ -123,7 +128,7 @@ window.onload = function () {
     }
     function clear(){
         for(i=0 ; i<soundGrid.length ; i++) {
-            soundGrid[i].style.backgroundColor = "rgba(195, 255, 184, 0.3)";
+            soundGrid[i].style.backgroundColor = "rgba(91, 91, 91, 0.282)";
             soundGrid[i].setAttribute("active","off");
         }
     }
@@ -132,9 +137,9 @@ window.onload = function () {
     function loopAnimation(element,number){
         for(let i=0 ; i<element.length; i++){
             if(i != number){
-                element[i].style.background = "white";
+                element[i].style.background = "none";
             }else if(i === timer){
-                element[i].style.background = "blue";
+                element[i].style.background = "rgba(61, 229, 86, 0.74)";
             }
         }
     }
@@ -159,7 +164,10 @@ window.onload = function () {
         if(currentCell.getAttribute("active")==="on"){
             let soundName = currentCell.classList[1];
             let player = new Tone.Player(audioBuffers[soundName]).toDestination();
-            player.start();
+           player.playbackRate = 1.5;
+            Tone.start().then(() => {
+               player.start();
+            });
         }
     }
 }
